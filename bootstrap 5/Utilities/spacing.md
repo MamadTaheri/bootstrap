@@ -6,12 +6,12 @@
 ## Template for sm, md, lg, xl, and xxl.
 `{property}{sides}-{breakpoint}-{size}`
 
-### property
+## property
 
 * m - for classes that set margin
 * p - for classes that set padding
 
-### sides
+## sides
 
 * t - for classes that set margin-top or padding-top
 * b - for classes that set margin-bottom or padding-bottom
@@ -21,7 +21,7 @@
 * y - for classes that set both *-top and *-bottom
 * blank - for classes that set a margin or padding on all 4 sides of the element
 
-### size
+## size
 
 * 0 - for classes that eliminate the margin or padding by setting it to 0
 * 1 - (by default) for classes that set the margin or padding to $spacer * .25
