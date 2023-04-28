@@ -66,7 +66,22 @@ const AuthContextProvider = ({ children }) => {
 
    // Logout user
    const logout = async () => {
-      console.log("logout");
+      setError(null);
+      const res = await fetch("/api/auth/logout", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+         },
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+         setUser(null);
+         router.push("/");
+      } else {
+         setError(handleErrors(data.message));
+      }
    };
 
    // Check if user logged in

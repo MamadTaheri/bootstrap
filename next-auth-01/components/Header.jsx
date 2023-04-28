@@ -6,7 +6,7 @@ import { AuthContext } from "@/context/AuthContext";
 const Header = () => {
    const router = useRouter();
    const path = router.pathname;
-   const { user } = useContext(AuthContext);
+   const { user, logout } = useContext(AuthContext);
 
    return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -42,7 +42,9 @@ const Header = () => {
                   {user ? (
                      <>
                         <span className="mx-3">{user.name}</span>
-                        <button className="btn btn-sm btn-outline-success me-2">Logout</button>
+                        <button className="btn btn-sm btn-outline-success me-2" onClick={logout}>
+                           Logout
+                        </button>
                      </>
                   ) : (
                      <>
