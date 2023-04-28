@@ -1,3 +1,5 @@
+import cookie from "cookie";
+
 export default async function handler(req, res) {
    if (req.method === "POST") {
       try {
@@ -14,8 +16,17 @@ export default async function handler(req, res) {
          });
 
          const data = await response.json();
-         console.log(data);
+         console.log(data.token);
          if (response.ok) {
+            res.setHeader(
+               "Set-Cookie",
+               cookie.serialize("token", data.token, {
+                  httpOnly: true,
+                  maxAge: 60 * 60 * 24 * 7, // 1 week
+                  path: "/",
+               })
+            );
+
             res.status(200).json({ user: data.user });
          } else {
             res.status(response.status).json({ message: data });
