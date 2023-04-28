@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export const AuthContext = createContext();
@@ -8,6 +8,10 @@ const AuthContextProvider = ({ children }) => {
    const [error, setError] = useState(null);
    const [loading, setLoading] = useState(false);
    const router = useRouter();
+
+   useEffect(() => {
+      checkUserLoggedIn();
+   }, []);
 
    const handleErrors = (message) => {
       const errors = [];
@@ -85,8 +89,15 @@ const AuthContextProvider = ({ children }) => {
    };
 
    // Check if user logged in
-   const checkUserLoggedIn = async () => {
-      console.log("logout");
+   const checkUserLoggedIn = async (user) => {
+      const res = await fetch("/api/auth/me");
+      const data = await res.json();
+
+      if (res.ok) {
+         setUser(data.user);
+      } else {
+         setUser(null);
+      }
    };
 
    return (
