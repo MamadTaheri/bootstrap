@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/context/AuthContext";
 
 const Header = () => {
    const router = useRouter();
    const path = router.pathname;
+   const { user } = useContext(AuthContext);
 
    return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -36,12 +39,21 @@ const Header = () => {
                   </li>
                </ul>
                <div className="d-flex">
-                  <Link className="btn btn-sm btn-outline-success me-2" href="/auth/login">
-                     Login
-                  </Link>
-                  <Link className="btn btn-sm btn-outline-success" href="/auth/register">
-                     Register
-                  </Link>
+                  {user ? (
+                     <>
+                        <span className="mx-3">{user.name}</span>
+                        <button className="btn btn-sm btn-outline-success me-2">Logout</button>
+                     </>
+                  ) : (
+                     <>
+                        <Link className="btn btn-sm btn-outline-success me-2" href="/auth/login">
+                           Login
+                        </Link>
+                        <Link className="btn btn-sm btn-outline-success" href="/auth/register">
+                           Register
+                        </Link>
+                     </>
+                  )}
                </div>
             </div>
          </div>

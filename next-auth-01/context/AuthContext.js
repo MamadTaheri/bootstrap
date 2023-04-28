@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
+   const [user, setUser] = useState(null);
    const [error, setError] = useState(null);
    const [loading, setLoading] = useState(false);
    const router = useRouter();
@@ -38,13 +39,29 @@ const AuthContextProvider = ({ children }) => {
          setError(handleErrors(data.message));
          setLoading(false);
       }
-
-      console.log(data);
    };
 
    // Login user
    const login = async (user) => {
-      console.log(user);
+      setError(null);
+      setLoading(true);
+      const res = await fetch("/api/auth/login", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+         },
+         body: JSON.stringify(user),
+      });
+      const data = await res.json();
+      if (res.ok) {
+         setLoading(false);
+         setUser(data.user);
+         router.push("/");
+      } else {
+         setError(handleErrors(data.message));
+         setLoading(false);
+      }
    };
 
    // Logout user
@@ -58,7 +75,7 @@ const AuthContextProvider = ({ children }) => {
    };
 
    return (
-      <AuthContext.Provider value={{ error, loading, register, login, logout, checkUserLoggedIn }}>
+      <AuthContext.Provider value={{ user, error, loading, register, login, logout, checkUserLoggedIn }}>
          {children}
       </AuthContext.Provider>
    );
